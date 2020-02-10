@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: iomond
+  name: iomond
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iomond
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: iomond
+    spec:
+      hostPID: true
+      containers:
+      - image: alexeldeib/iomond:latest
+        command: ["/iomond"]
+        name: iomond
+        resources: {}
+        securityContext:
+          privileged: true
+          capabilities:
+            add: ["SYS_RAWIO"]
+        volumeMounts:
+        - name: disk
+          mountPath: "/dev/disk"
+        - name: sda
+          mountPath: "/mnt/sda"
+      volumes:
+      - name: disk
+        hostPath:
+          path: "/dev/disk"
+      - name: sda
+        hostPath:
+          path: "/dev/sda"
+          type: BlockDevice

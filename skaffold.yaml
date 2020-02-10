@@ -1,0 +1,13 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+metadata:
+  name: iomond
+build:
+  artifacts:
+  - image: alexeldeib/iomond
+    context: .
+  local: {}
+deploy:
+  kubectl:
+    manifests:
+    - ./manifests/deploy.yaml
